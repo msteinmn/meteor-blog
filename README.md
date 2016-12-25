@@ -184,7 +184,7 @@ $ meteor add mrt:bootstrap-3
 ### Custom Templates
 
 The admin templates are designed for use with Bootstrap. However, the front-end
-is bare markup, ready to by styled, and does not depend on any CSS framework at
+is bare markup, ready to be styled, and does not depend on any CSS framework at
 all. If the default templates aren't doing it for you, you can override the
 default templates with your own by setting configuration variables:
 

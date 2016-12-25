@@ -90,6 +90,7 @@ Meteor.startup ->
     Template[customShow].helpers
       post: Template.blogShow.__helpers.get('post')
       blogReady: Template.blogShow.__helpers.get('blogReady')
+      notFound: Template.blogShow.__helpers.get('notFound')
 
 
 renderSideComments = null
