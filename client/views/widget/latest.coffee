@@ -5,9 +5,20 @@ Template.blogLatest.onRendered () ->
 
 
 Template.blogLatest.helpers
+#  latest: ->
+#    num = if @num then @num else 3
+#    Blog.Post.all limit: num
+    
   latest: ->
     num = if @num then @num else 3
-    Blog.Post.all limit: num
+    Blog.Post.all
+      limit: num
+      sort: updatedAt: -1
+        
+  random: ->
+    num = if @num then @num else 3
+    Blog.Post.all
+      sample: size: num
 
   date: (date) ->
     if date
@@ -24,6 +35,7 @@ Meteor.startup ->
     Template[customLatest].onRendered Template.blogLatest._callbacks.rendered[0]
     Template[customLatest].helpers
       latest: Template.blogLatest.__helpers.get('latest')
+      random: Template.blogLatest.__helpers.get('random')
       date: Template.blogLatest.__helpers.get('date')
 
 
