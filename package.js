@@ -1,8 +1,8 @@
 Package.describe({
-  summary: "A package that provides a blog at /blog",
+  summary: "A package that provides a blog at /blog, forked from meteor-blog @0.8.6",
   version: "0.8.6",
-  name: "ryw:blog",
-  git: "https://github.com/meteor-blog/meteor-blog.git"
+  name: "msteinmn:blog",
+  git: "https://github.com/msteinmn/meteor-blog.git"
 });
 
 Package.onUse(function(api) {
@@ -23,7 +23,7 @@ Package.onUse(function(api) {
     'meteorhacks:fast-render@2.10.0',
     'meteorhacks:subs-manager@1.6.2',
     'cfs:standard-packages@0.5.9',
-    'cfs:gridfs@0.0.33',
+    'cfs:gridfs@0.0.34',
     'cfs:s3@0.1.3'
   ], both);
 
@@ -126,7 +126,7 @@ Package.onUse(function(api) {
 
 Package.onTest(function (api) {
   api.use('kadira:flow-router');
-  api.use('ryw:blog');
+  api.use('msteinmn:blog');
   api.use('tinytest');
   api.use('coffeescript');
 
