@@ -51,10 +51,36 @@ Template.blogAdmin.events
   'change [data-action=filtering]': (e) ->
     e.preventDefault()
     filters = {}
-    if $(e.currentTarget).val() == 'mine'
-      filters.userId = Meteor.userId()
+    switch $(e.currentTarget).val()
+      when 'mine'
+        filters.userId = Meteor.userId()
+      when 'published'
+        filters.mode = 'public'
+      when 'draft'
+        filters.mode = 'draft'
+      when 'private'
+        filters.mode = 'private'
     Session.set 'filters', filters
 
+    
+# Provide data to custom templates, if any
+Meteor.startup ->
+  if Blog.settings.blogAdminTemplate
+    customIndex = Blog.settings.blogAdminTemplate
+    Template[customIndex].onCreated Template.blogAdmin._callbacks.created[0]
+    Template[customIndex].onRendered Template.blogAdmin._callbacks.rendered[0]
+    Template[customIndex].helpers
+      subsReady: Template.blogAdmin.__helpers.get('subsReady')
+      posts: Template.blogAdmin.__helpers.get('posts')
+      table: Template.blogAdmin.__helpers.get('table')
+    Template[customIndex].__eventMaps[0] =  Template.blogAdmin.__eventMaps[0]
+    
+#    eventMaps = Template.blogAdmin.__eventMaps
+#    _.each Template[customIndex].__eventMaps, (eventMaps) ->
+#      self.__eventMaps = self.__eventMaps.concat(eventMaps.__eventMaps)
+#      return
+# ToDo: should use _.each to copy entire array
+# https://github.com/aldeed/meteor-template-extension/blob/master/lib/template-inherits-events-from.js
 
 # ------------------------------------------------------------------------------
 # TABLE COLUMNS

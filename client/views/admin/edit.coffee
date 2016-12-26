@@ -49,6 +49,12 @@ setEditMode = (tpl, mode) ->
   tpl.$('.html-editor').toggle()
   tpl.$('.edit-mode a').removeClass 'selected'
   tpl.$(".#{mode}-toggle").addClass 'selected'
+    
+setEditModeIntro = (tpl, mode) ->
+  tpl.$('.editable-intro').toggle()
+  tpl.$('.html-editor-intro').toggle()
+  tpl.$('.edit-mode-intro a').removeClass 'selected'
+  tpl.$(".#{mode}-toggle").addClass 'selected'
 
 # Save
 save = (tpl, cb) ->
@@ -79,6 +85,35 @@ save = (tpl, cb) ->
   if not body
     return cb(null, new Error Blog.settings.language.editErrorBodyRequired)
 
+
+# save Intro
+  $editableIntro = $('.editable-intro', $form)
+  editorIntro = BlogEditorIntro.make tpl
+
+  # Make paragraphs commentable
+  # remove duplicates
+  $editableIntro.find('p[data-section-id]').each ->
+    sec_id = $(this).attr 'data-section-id'
+    if $editableIntro.find("p[data-section-id=#{sec_id}]").length > 1
+      $editableIntro.find("p[data-section-id=#{sec_id}]:gt(0)").removeAttr 'data-section-id'
+  # decorate
+  i = $editableIntro.find('p[data-section-id]').length + 1
+  $editableIntro.find('p:not([data-section-id])').each ->
+    $(this).addClass('intro-section').attr('data-section-id', i)
+    i++
+
+  # Highlight code blocks
+  editorIntro.highlightSyntax()
+
+  if $editableIntro.is(':visible')
+    intro = editorIntro.contents()
+  else
+    intro = $('.html-editor-intro', $form).val().trim()
+
+#  if not intro
+#    return cb(null, new Error Blog.settings.language.editErrorBodyRequired)
+
+
   slug = $('[name=slug]', $form).val()
 
   attrs =
@@ -86,9 +121,14 @@ save = (tpl, cb) ->
     tags: getBlogTags($('[name=tags]', $form).val().split(','))
     slug: slug
     description: $('[name=description]', $form).val()
+    intro: intro
     body: body
+    linkedin: Meteor.user().profile.linkedin
+    twitter: Meteor.user().profile.twitter
+    publishedAt: new Date($('[name=publishedAt]', $form).val())
     updatedAt: new Date()
     titleBackground: $('[name=background-title]', $form).is(':checked')
+    titleBackgroundColor: $('[name=background-title-color]', $form).is(':checked')
 
   attrs.featuredImageWidth = Session.get('blog.featuredImageWidth')
   attrs.featuredImageHeight = Session.get('blog.featuredImageHeight')
@@ -106,6 +146,13 @@ save = (tpl, cb) ->
     Meteor.call 'doesBlogExist', slug, (err, exists) ->
       if not exists
         attrs.userId = Meteor.userId()
+        attrs.md5hash = Meteor.user().profile.md5hash
+        attrs.firstName = Meteor.user().profile.firstName
+        attrs.lastName = Meteor.user().profile.lastName
+        attrs.bio = Meteor.user().profile.bio
+        attrs.linkedin = Meteor.user().profile.linkedin
+        attrs.twitter = Meteor.user().profile.twitter
+        
         post = Blog.Post.create attrs
         if post.errors
           return cb(null, new Error _(post.errors[0]).values()[0])
@@ -162,6 +209,9 @@ Template.blogAdminEdit.onRendered ->
           # Load post body initially, if any
           @$('.editable').html post.body
           @$('.html-editor').html post.body
+            
+          @$('.editable-intro').html post.intro
+          @$('.html-editor-intro').html post.intro
 
         # Tags
         $tags = @$('[data-role=tagsinput]')
@@ -179,6 +229,7 @@ Template.blogAdminEdit.onRendered ->
 
         # Create the Medium editor
         BlogEditor.make @
+        BlogEditorIntro.make @
 
 Template.blogAdminEdit.helpers
   post: ->
@@ -198,6 +249,49 @@ Template.blogAdminEdit.helpers
 
 Template.blogAdminEdit.events
   # Toggle between VISUAL/HTML modes
+  'click [data-action=toggle-visual-intro]': (e, tpl) ->
+    if tpl.$('.editable-intro').is(':visible')
+      return
+
+    BlogEditorIntro.make(tpl).highlightSyntax()
+    setEditModeIntro tpl, 'visual'
+    
+  'click [data-action=toggle-html-intro]': (e, tpl) ->
+    $editable = tpl.$('.editable-intro')
+    $html = tpl.$('.html-editor-intro')
+    if $html.is(':visible')
+      return
+
+    $html.val BlogEditorIntro.make(tpl).pretty()
+    setEditModeIntro tpl, 'html'
+    $html.height($editable.height())
+    
+  # Copy HTML content to visual editor and autosize height
+  'keyup .html-editor-intro': (e, tpl) ->
+    $editable = tpl.$('.editable-intro')
+    $html = tpl.$('.html-editor-intro')
+
+    $editable.html($html.val()?.trim())
+    $html.height($editable.height())
+    
+  # Autosave
+  'input .editable-intro, keydown .editable-intro, keydown .html-editor-intro': _.debounce (e, tpl) ->
+    save tpl, (id, err) ->
+      if err
+        return toastr.error err.message
+
+      if id
+        # If new blog post, subscribe to the new post and update URL
+        tpl.id.set id
+        path = Blog.Router.pathFor 'blogAdminEdit', id: id
+        Blog.Router.replaceState path
+
+      toastr.success Blog.settings.language.saved
+  , 8000
+        
+    
+    
+    
   'click [data-action=toggle-visual]': (e, tpl) ->
     if tpl.$('.editable').is(':visible')
       return
@@ -286,3 +380,16 @@ Template.blogAdminEdit.events
       if err
         return toastr.error err.message
       Blog.Router.go 'blogAdmin'
+
+        
+Meteor.startup ->
+  if Blog.settings.blogAdminEditTemplate
+    customIndex = Blog.settings.blogAdminEditTemplate
+    Template[customIndex].onCreated Template.blogAdminEdit._callbacks.created[0]
+    Template[customIndex].onRendered Template.blogAdminEdit._callbacks.rendered[0]
+    Template[customIndex].helpers
+      subsReady: Template.blogAdminEdit.__helpers.get('subsReady')
+      post: Template.blogAdminEdit.__helpers.get('post')
+      featuredImage: Template.blogAdminEdit.__helpers.get('featuredImage')
+      featuredImageName: Template.blogAdminEdit.__helpers.get('featuredImageName')
+    Template[customIndex].__eventMaps[0] =  Template.blogAdminEdit.__eventMaps[0]

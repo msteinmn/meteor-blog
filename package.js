@@ -89,6 +89,7 @@ Package.onUse(function(api) {
     'client/views/admin/admin.coffee',
     'client/views/admin/edit.html',
     'client/views/admin/editor.coffee',
+    'client/views/admin/editorIntro.coffee',
     'client/views/admin/edit.coffee',
     'client/stylesheets/variables.import.less',
     'client/views/blog/blog.less',

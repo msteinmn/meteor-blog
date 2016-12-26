@@ -14,7 +14,7 @@ class @BlogEditor extends MediumEditor
         placeholder:
           text: ''
       toolbar:
-        buttons: ['bold', 'italic', 'underline', 'anchor', 'pre', 'h1', 'h2', 'orderedlist', 'unorderedlist', 'quote', 'image']
+        buttons: ['bold', 'italic', 'underline', 'anchor', 'pre', 'h1', 'h2', 'h3', 'orderedlist', 'unorderedlist', 'quote', 'image']
 
     # Disable medium toolbar if we are in a code block
     editor.subscribe 'showToolbar', (e) =>
