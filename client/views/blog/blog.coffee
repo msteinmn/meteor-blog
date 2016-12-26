@@ -51,6 +51,25 @@ Meteor.startup ->
       blogReady: Template.blogIndex.__helpers.get('blogReady')
 
 
+Template.blogIndexLoop.helpers
+  gravatarUrl: -> Gravatar.imageUrl @md5hash, secure: true
+  isAdmin: -> Session.get "blog.canEditPost"
+  titleBackground: -> @titleBackground
+    
+Template.blogIndexLoop.events
+  'click [data-action=edit-post]': editPost
+
+# Provide data to custom templates, if any
+Meteor.startup ->
+  if Blog.settings.blogIndexLoopTemplate
+    customIndex = Blog.settings.blogIndexLoopTemplate
+#    Template[customIndex].onCreated Template.blogIndexLoop._callbacks.created[0]
+    Template[customIndex].helpers
+      isAdmin: Template.blogIndexLoop.__helpers.get('isAdmin')
+      titleBackground: Template.blogIndexLoop.__helpers.get('titleBackground')
+      gravatarUrl: Template.blogIndexLoop.__helpers.get('gravatarUrl')
+      Template[customIndex].__eventMaps[0] =  Template.blogIndexLoop.__eventMaps[0]
+
 # ------------------------------------------------------------------------------
 # SHOW BLOG
 
@@ -143,6 +162,19 @@ Template.blogShowBody.helpers
     description: post.description,
     author: post.authorName(),
     thumbnail: post.thumbnail()
+  gravatarUrl: -> Gravatar.imageUrl @md5hash, secure: true
+    
+# Provide data to custom templates, if any
+Meteor.startup ->
+  if Blog.settings.blogShowBodyTemplate
+    customShow = Blog.settings.blogShowBodyTemplate
+    Template[customShow].onRendered Template.blogShowBody._callbacks.rendered[0]
+    Template[customShow].helpers
+      isAdmin: Template.blogShowBody.__helpers.get('isAdmin')
+      shareData: Template.blogShowBody.__helpers.get('shareData')
+      gravatarUrl: Template.blogShowBody.__helpers.get('gravatarUrl')
+    Template[customShow].__eventMaps[0] =  Template.blogShowBody.__eventMaps[0]
+
 
 Template.blogShowFeaturedImage.events
   'click [data-action=edit-post]': editPost
@@ -151,6 +183,19 @@ Template.blogShowFeaturedImage.helpers
   isAdmin: -> Session.get "blog.canEditPost"
   fullWidthFeaturedImage: -> Session.get "blog.fullWidthFeaturedImage"
   fullWidthFeaturedImageHeight: -> Session.get "blog.fullWidthFeaturedImageHeight"
+  titleBackground: -> @titleBackground
+  gravatarUrl: -> Gravatar.imageUrl @md5hash, secure: true
+    
+    
+# Provide data to custom templates, if any
+Meteor.startup ->
+  if Blog.settings.blogShowFeaturedImageTemplate
+    customShow = Blog.settings.blogShowFeaturedImageTemplate
+    Template[customShow].helpers
+      isAdmin: Template.blogShowFeaturedImage.__helpers.get('isAdmin')
+      titleBackground: Template.blogShowFeaturedImage.__helpers.get('titleBackground')
+      gravatarUrl: Template.blogShowFeaturedImage.__helpers.get('gravatarUrl')
+    Template[customShow].__eventMaps[0] =  Template.blogShowFeaturedImage.__eventMaps[0]
 
 
 # ------------------------------------------------------------------------------

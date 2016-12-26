@@ -24,6 +24,8 @@ Template.blogLatest.helpers
     if date
       date = new Date(date)
       moment(date).format('MMMM Do, YYYY')
+        
+  gravatarUrl: -> Gravatar.imageUrl @md5hash, secure: true
 
 
 
@@ -37,6 +39,7 @@ Meteor.startup ->
       latest: Template.blogLatest.__helpers.get('latest')
       random: Template.blogLatest.__helpers.get('random')
       date: Template.blogLatest.__helpers.get('date')
+      gravatarUrl: Template.blogLatest.__helpers.get('gravatarUrl')
 
 
   

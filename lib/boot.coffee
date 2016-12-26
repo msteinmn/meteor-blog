@@ -41,7 +41,11 @@ if Meteor.isClient
   Blog.config
     title: ''
     blogIndexTemplate: null
+    blogIndexLoopTemplate: null
     blogShowTemplate: null
+    blogShowBodyTemplate: null
+    readMeterTemplate: null
+    blogShowFeaturedImageTemplate: null
     blogNotFoundTemplate: null
     blogAdminTemplate: null
     blogAdminEditTemplate: null

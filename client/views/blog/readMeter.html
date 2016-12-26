@@ -1,0 +1,32 @@
+<template name="readMeter">
+  <div id="read-meter-styles">    
+    <div id="read-meter">
+        <!-- <div id="meter-above"></div> -->
+
+        <div class="progress-meter">
+            <a href="javascript:window.print();"><i class="fa fa-print fa-2x" style="color: teal; padding: 1rem 2rem"></i></a>
+            <a href="#comments"><i class="fa fa-comment fa-2x" style="color: teal; padding: 1rem 2rem"></i></a>
+            <p class="read-meter-title">{{title}}</p>
+           <div class="progress-meter-granules">
+              <div id="meter-fill" class="meter-granules-filled"></div>
+           </div>
+            
+           <div class="read-meter-below">  
+             <p id="read-meter-minutes"></p> 
+             <div style="float:right">{{> subscribeEmailSmall}}</div>  
+           </div>
+        </div>
+    </div>
+  </div>  
+  <div id="meter-filler"></div>
+</template>
+
+
+<template name="subscribeEmailSmall">
+  <div id="subscribe-email-small">
+    <form id="subscribe-form-small">
+        <input type="email" name="email" id="Email" required placeholder="E-Mail">
+        <button type="submit" class="btn btn-small">Subscribe</button>
+    </form>
+  </div>
+</template>

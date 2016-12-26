@@ -24,7 +24,8 @@ Package.onUse(function(api) {
     'meteorhacks:subs-manager@1.6.2',
     'cfs:standard-packages@0.5.9',
     'cfs:gridfs@0.0.34',
-    'cfs:s3@0.1.3'
+    'cfs:s3@0.1.3',
+    'jparker:gravatar'
   ], both);
 
   // FILES FOR SERVER AND CLIENT
@@ -97,7 +98,9 @@ Package.onUse(function(api) {
     'client/views/blog/show.html',
     'client/views/blog/blog.coffee',
     'client/views/widget/latest.html',
-    'client/views/widget/latest.coffee'
+    'client/views/widget/latest.coffee',
+    'client/views/blog/readMeter.html',
+    'client/views/blog/readMeter.coffee'
   ], 'client');
 
   // STATIC ASSETS FOR CLIENT
