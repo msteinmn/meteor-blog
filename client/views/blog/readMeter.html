@@ -13,7 +13,10 @@
             
            <div class="read-meter-below">  
              <p id="read-meter-minutes"></p> 
-             <div style="float:right">{{> subscribeEmailSmall}}</div>  
+             <div style="float:right">
+                 {{> readCounter}}
+                 {{> subscribeEmailSmall}}
+             </div>  
            </div>
         </div>
     </div>
@@ -28,5 +31,11 @@
         <input type="email" name="email" id="Email" required placeholder="E-Mail">
         <button type="submit" class="btn btn-small">Subscribe</button>
     </form>
+  </div>
+</template>
+
+<template name="readCounter">
+  <div id="read-counter">
+      Read {{readCounter}} times
   </div>
 </template>

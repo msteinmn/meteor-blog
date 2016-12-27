@@ -34,6 +34,7 @@ Package.onUse(function(api) {
     'lib/boot.coffee',
     'collections/author.coffee',
     'collections/post.coffee',
+    'collections/postReadCount.coffee',
     'collections/comment.coffee',
     'collections/tag.coffee',
     'collections/files.coffee',

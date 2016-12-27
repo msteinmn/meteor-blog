@@ -3,6 +3,12 @@
 # Public Publications
 #
 
+Meteor.publish 'blog.readCountBySlug', (slug) ->
+  check slug, String
+    
+  Blog.ReadCount.find slug: slug
+    
+
 Meteor.publish 'blog.commentsBySlug', (slug) ->
   check slug, String
 

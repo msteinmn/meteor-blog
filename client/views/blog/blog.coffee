@@ -84,14 +84,28 @@ Template.blogShow.onCreated ->
   @autorun =>
     @slug.set Blog.Router.getParam 'slug'
 
+#  console.log 'this:', @slug.get()
   postSub = Blog.subs.subscribe 'blog.singlePostBySlug', @slug.get()
   commentsSub = Blog.subs.subscribe 'blog.commentsBySlug', @slug.get()
   authorsSub = Blog.subs.subscribe 'blog.authors'
+  readCountSub = Blog.subs.subscribe 'blog.readCountBySlug', @slug.get()
+
 
   @blogReady = new ReactiveVar false
   @autorun =>
     if postSub.ready() and commentsSub.ready() and authorsSub.ready() and !Meteor.loggingIn()
       @blogReady.set true
+        
+Template.blogShow.onRendered ->
+    #console.log 'Rendered count2:', @
+    @autorun =>
+      if @blogReady.get()
+        #console.log 'Rendered count:', @
+        Meteor.call 'increment_count', @slug.get(), (err) =>
+          if err 
+            console.log 'Method error:', err
+        #Blog.ReadCount.increment_count(@slug.get())
+    
 
 Template.blogShow.helpers
   blogReady: -> Template.instance().blogReady.get()
@@ -111,6 +125,7 @@ Meteor.startup ->
   if Blog.settings.blogShowTemplate
     customShow = Blog.settings.blogShowTemplate
     Template[customShow].onCreated Template.blogShow._callbacks.created[0]
+    Template[customShow].onRendered Template.blogShow._callbacks.rendered[0]
     Template[customShow].helpers
       post: Template.blogShow.__helpers.get('post')
       blogReady: Template.blogShow.__helpers.get('blogReady')

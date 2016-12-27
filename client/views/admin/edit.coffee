@@ -147,6 +147,8 @@ save = (tpl, cb) ->
     Meteor.call 'doesBlogExist', slug, (err, exists) ->
       if not exists
         attrs.userId = Meteor.userId()
+        attrs.mode = 'draft'
+        attrs.publishedAt = null
         attrs.md5hash = Meteor.user().profile.md5hash
         attrs.firstName = Meteor.user().profile.firstName
         attrs.lastName = Meteor.user().profile.lastName
@@ -158,8 +160,17 @@ save = (tpl, cb) ->
         if post.errors
           return cb(null, new Error _(post.errors[0]).values()[0])
         cb post.id
+        
+# ---- ReadCount -----
+        readCount = Blog.ReadCount.create count: 100, slug: slug
+        if readCount.errors
+          return cb(null, new Error _(readCount.errors[0]).values()[0])
+        cb readCount.id
+# ---- end ReadCount ----
+        
       else
         return cb(null, new Error Blog.settings.language.editErrorSlugExists)
+
 
 
 # ------------------------------------------------------------------------------
@@ -174,6 +185,7 @@ Template.blogAdminEdit.onCreated ->
   postSub = null
   authorsSub = @subscribe 'blog.authors'
   tagsSub = @subscribe 'blog.postTags'
+  readCountSub = @subscribe 'blog.readCountBySlug'
 
   @autorun =>
     postSub = @subscribe 'blog.singlePostById', @id.get()

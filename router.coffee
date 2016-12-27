@@ -191,7 +191,7 @@ Meteor.startup ->
       @subscribe 'blog.authors'
       @subscribe 'blog.singlePostBySlug', params.slug
       @subscribe 'blog.commentsBySlug', params.slug
-
+      @subscribe 'blog.readCountBySlug', params.slug
 
   # ----------------------------------------------------------------------------
   # ADMIN ROUTES

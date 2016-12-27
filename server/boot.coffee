@@ -10,6 +10,7 @@ Meteor.startup ->
 
   Blog.Post._collection._ensureIndex 'slug': 1
   Blog.Comment._collection._ensureIndex 'slug': 1
+  Blog.ReadCount._collection._ensureIndex 'slug': 1
 
   # Create 'excerpt' field if none
   if Blog.Post.where({ excerpt: { $exists: 0 }}).length

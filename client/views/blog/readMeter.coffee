@@ -58,3 +58,17 @@ Template.subscribeEmailSmall.events 'submit form#subscribe-form-small': (e, t) -
         toastr.success 'We got you covered!'
       return
   return
+
+#Template.readCounter.onCreated ->
+  #readCountSub = Blog.subs.subscribe 'blog.readCountBySlug', @data.slug
+  #console.log 'context-onCreated:', @
+    
+#Template.readCounter.onRendered ->
+#  doc = Blog.ReadCount.first slug: @data.slug
+#  #console.log 'context-onRendered:', @, doc
+
+Template.readCounter.helpers
+  readCounter: ->
+    doc = Blog.ReadCount.first slug: @slug
+    #console.log 'context-helper:', @
+    doc.count
