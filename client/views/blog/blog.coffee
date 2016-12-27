@@ -1,4 +1,7 @@
-
+editPost = (e, tpl) ->
+  e.preventDefault()
+  postId = Blog.Post.first(slug: @slug)._id
+  Blog.Router.go 'blogAdminEdit', id: postId
 # ------------------------------------------------------------------------------
 # BLOG INDEX
 
@@ -55,6 +58,7 @@ Template.blogIndexLoop.helpers
   gravatarUrl: -> Gravatar.imageUrl @md5hash, secure: true
   isAdmin: -> Session.get "blog.canEditPost"
   titleBackground: -> @titleBackground
+  authorName: -> @firstName + ' ' + @lastName
     
 Template.blogIndexLoop.events
   'click [data-action=edit-post]': editPost
@@ -68,7 +72,8 @@ Meteor.startup ->
       isAdmin: Template.blogIndexLoop.__helpers.get('isAdmin')
       titleBackground: Template.blogIndexLoop.__helpers.get('titleBackground')
       gravatarUrl: Template.blogIndexLoop.__helpers.get('gravatarUrl')
-      Template[customIndex].__eventMaps[0] =  Template.blogIndexLoop.__eventMaps[0]
+      authorName: Template.blogShowFeaturedImage.__helpers.get('authorName')
+    Template[customIndex].__eventMaps[0] =  Template.blogIndexLoop.__eventMaps[0]
 
 # ------------------------------------------------------------------------------
 # SHOW BLOG
@@ -145,10 +150,6 @@ Template.blogShowBody.onRendered ->
   # Sidecomments.js
   renderSideComments.call @, @data.slug
 
-editPost = (e, tpl) ->
-  e.preventDefault()
-  postId = Blog.Post.first(slug: @slug)._id
-  Blog.Router.go 'blogAdminEdit', id: postId
 
 Template.blogShowBody.events
   'click [data-action=edit-post]': editPost
@@ -163,6 +164,7 @@ Template.blogShowBody.helpers
     author: post.authorName(),
     thumbnail: post.thumbnail()
   gravatarUrl: -> Gravatar.imageUrl @md5hash, secure: true
+  authorName: -> @firstName + ' ' + @lastName
     
 # Provide data to custom templates, if any
 Meteor.startup ->
@@ -173,6 +175,7 @@ Meteor.startup ->
       isAdmin: Template.blogShowBody.__helpers.get('isAdmin')
       shareData: Template.blogShowBody.__helpers.get('shareData')
       gravatarUrl: Template.blogShowBody.__helpers.get('gravatarUrl')
+      authorName: Template.blogShowFeaturedImage.__helpers.get('authorName')
     Template[customShow].__eventMaps[0] =  Template.blogShowBody.__eventMaps[0]
 
 
@@ -185,6 +188,7 @@ Template.blogShowFeaturedImage.helpers
   fullWidthFeaturedImageHeight: -> Session.get "blog.fullWidthFeaturedImageHeight"
   titleBackground: -> @titleBackground
   gravatarUrl: -> Gravatar.imageUrl @md5hash, secure: true
+  authorName: -> @firstName + ' ' + @lastName
     
     
 # Provide data to custom templates, if any
@@ -195,6 +199,7 @@ Meteor.startup ->
       isAdmin: Template.blogShowFeaturedImage.__helpers.get('isAdmin')
       titleBackground: Template.blogShowFeaturedImage.__helpers.get('titleBackground')
       gravatarUrl: Template.blogShowFeaturedImage.__helpers.get('gravatarUrl')
+      authorName: Template.blogShowFeaturedImage.__helpers.get('authorName')
     Template[customShow].__eventMaps[0] =  Template.blogShowFeaturedImage.__eventMaps[0]
 
 

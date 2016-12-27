@@ -125,6 +125,7 @@ save = (tpl, cb) ->
     body: body
     linkedin: Meteor.user().profile.linkedin
     twitter: Meteor.user().profile.twitter
+    bio: Meteor.user().profile.bio
     publishedAt: new Date($('[name=publishedAt]', $form).val())
     updatedAt: new Date()
     titleBackground: $('[name=background-title]', $form).is(':checked')
