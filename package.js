@@ -94,6 +94,7 @@ Package.onUse(function(api) {
     'client/views/admin/edit.coffee',
     'client/stylesheets/variables.import.less',
     'client/views/blog/blog.less',
+    'client/views/blog/readMeter.less',
     'client/views/blog/blog.html',
     'client/views/blog/show.html',
     'client/views/blog/blog.coffee',

@@ -1,0 +1,76 @@
+
+@media print {
+    #read-meter-styles {
+        display: none;
+    }
+    #meter-filler {
+        display: none;
+    }
+}
+
+@media screen {
+    
+#read-meter-styles {
+    
+    #read-meter {
+        background-color: white;
+        z-index: 100;
+    }
+    
+    #read-meter-minutes {
+        margin: 0;
+        float: left;
+    }
+    .read-meter-below {
+        height: 55px;
+    }
+    .read-meter-title {
+        display: inline; 
+        float: right; 
+        padding: 1rem 2rem; 
+        color: teal;
+        max-width: 70%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .read-meter-fixed {
+        position: fixed;
+        top: 0px;
+        width: 80%;
+        max-width: 710px;
+        margin: 0 auto 4rem auto;
+        padding-right: 40px;
+    }
+
+  .progress-meter {
+        padding-top: 66px;
+      //margin: 0;
+    }
+    .progress-meter p {
+        margin: 0;
+    }
+    
+  .progress-meter .progress-meter-granules {
+    margin-bottom: 0.625rem;
+    padding: 0px;
+    height: 5px;
+    border: medium none;
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjdweCIgaGVpZ2h0PSI1cHgiIHZpZXdCb3g9IjAgMCA3IDUiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDcgNSIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PGNpcmNsZSBmaWxsPSIjRTRFNEU0IiBjeD0iMi41IiBjeT0iMi41IiByPSIyLjUiLz48L3N2Zz4=");
+    background-position: 0px 0px;
+    background-repeat: repeat-x;
+    background-color: transparent;
+  }
+
+  .progress-meter .progress-meter-granules .meter-granules-filled {
+    height: 100%;
+    display: block;
+    margin: 0px;
+    padding: 0px;
+    border: medium none;
+    width: 0px;
+    background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjdweCIgaGVpZ2h0PSI1cHgiIHZpZXdCb3g9IjAgMCA3IDUiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDcgNSIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PGNpcmNsZSBmaWxsPSIjMzliMmMwIiBjeD0iMi41IiBjeT0iMi41IiByPSIyLjUiLz48L3N2Zz4=") repeat-x scroll 0px 0px transparent;
+  }
+
+}
+}
