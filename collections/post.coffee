@@ -121,6 +121,24 @@ class Blog.Post extends Minimongoid
         ret += matches[i++].replace(/(<([^>]+)>)/ig, ' ').replace(/(\s\.)/, '.').replace('&nbsp;', ' ').trim()
       ret
 
+  @random: (slug) ->
+    items = Blog.Post._collection.find().count()
+    console.log '# items:', items, 'slug:', slug
+
+    if items <= 3
+      latest = Blog.Post.all {limit: 3, sort: updatedAt: -1}
+      console.log 'latest <=3:'
+
+    else        
+      skip = Math.round(Math.random()*(items-3))
+      #latest = Blog.Post.all {skip: skip, limit: 3, sort: updatedAt: -1}
+      latest = Blog.Post.where {slug: $not: slug}, {skip: skip, limit: 3, sort: updatedAt: -1}
+        
+      console.log 'skip', skip
+
+    latest
+
+
   author: ->
     Blog.Author.first @userId
 
@@ -152,6 +170,16 @@ class Blog.Post extends Minimongoid
 
 if Meteor.isServer
   Meteor.methods
+    
+#    aggregate: ->
+#      console.log 'aggregate method'
+#      Blog.Post._collection.find().count() 
+#        #mode: 'public'
+#      #Blog.Post._collection.aggregate [ 
+#        #    { $match: mode: 'public' }
+#        #    { $group: $sample: size: 3 } 
+#        #]
+    
     doesBlogExist: (slug) ->
       check slug, String
 
