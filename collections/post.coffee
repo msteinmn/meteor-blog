@@ -4,7 +4,10 @@ class Blog.Post extends Minimongoid
 
   @after_save: (post) ->
     post.tags = Blog.Post.splitTags post.tags
-    post.excerpt = Blog.Post.excerpt post.body if post.body
+    if post.intro
+      post.excerpt = Blog.Post.excerpt post.intro
+    else if post.body
+      post.excerpt = Blog.Post.excerpt post.body
 
     @_collection.update _id: post.id,
       $set:
@@ -152,8 +155,8 @@ class Blog.Post extends Minimongoid
       else if author.profile and author.profile.firstName and author.profile.lastName
         return "#{author.profile.firstName} #{author.profile.lastName}"
 
-      else if author.profile and author.profile.twitter
-        return "<a href=\"http://twitter.com/#{author.profile.twitter}\">#{author.profile.twitter}</a>"
+      #else if author.profile and author.profile.twitter
+        #return "<a href=\"http://twitter.com/#{author.profile.twitter}\">#{author.profile.twitter}</a>"
 
       else if author.username
         return author.username

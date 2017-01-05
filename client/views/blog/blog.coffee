@@ -100,11 +100,11 @@ Template.blogShow.onRendered ->
     #console.log 'Rendered count2:', @
     @autorun =>
       if @blogReady.get()
-        #console.log 'Rendered count:', @
-        Meteor.call 'increment_count', @slug.get(), (err) =>
-          if err 
-            console.log 'Method error:', err
-        #Blog.ReadCount.increment_count(@slug.get())
+        console.log 'slug:', @slug.get()
+        if @slug.get()
+          Meteor.call 'increment_count', @slug.get(), (err) =>
+            if err 
+              console.log 'Method error:', err
     
 
 Template.blogShow.helpers
@@ -176,8 +176,11 @@ Template.blogShowBody.helpers
     title: post.title,
     excerpt: post.excerpt,
     description: post.description,
-    author: post.authorName(),
+    #author: post.authorName(),
+    author: @firstName + ' ' + @lastName,
+    site: post.twitter,
     thumbnail: post.thumbnail()
+
   gravatarUrl: -> Gravatar.imageUrl @md5hash, secure: true
   authorName: -> @firstName + ' ' + @lastName
     

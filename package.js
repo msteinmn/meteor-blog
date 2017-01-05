@@ -20,7 +20,7 @@ Package.onUse(function(api) {
     'kaptron:minimongoid@0.9.1',
     'momentjs:moment@2.10.6',
     'alanning:roles@1.2.13',
-    'meteorhacks:fast-render@2.10.0',
+//    'meteorhacks:fast-render@2.10.0',
     'meteorhacks:subs-manager@1.6.2',
     'cfs:standard-packages@0.5.9',
     'cfs:gridfs@0.0.34',
@@ -50,7 +50,8 @@ Package.onUse(function(api) {
     'reactive-var',
     'less',
     'aslagle:reactive-table@0.5.5',
-    'liberation:shareit@1.0.1',
+//    'liberation:shareit@1.0.1',
+    'msteinmn:shareit@1.1.3',
     'flawless:meteor-toastr@1.0.1'
   ], 'client');
 

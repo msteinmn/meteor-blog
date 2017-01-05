@@ -162,10 +162,11 @@ save = (tpl, cb) ->
         cb post.id
         
 # ---- ReadCount -----
-        readCount = Blog.ReadCount.create count: 100, slug: slug
-        if readCount.errors
-          return cb(null, new Error _(readCount.errors[0]).values()[0])
-        cb readCount.id
+        if slug
+          readCount = Blog.ReadCount.create count: 100, slug: slug
+          if readCount.errors
+            return cb(null, new Error _(readCount.errors[0]).values()[0])
+          cb readCount.id
 # ---- end ReadCount ----
         
       else
@@ -389,6 +390,18 @@ Template.blogAdminEdit.events
 
   'submit form': (e, tpl) ->
     e.preventDefault()
+    
+    # this should be in a separate event attached
+    # to sfBlogAdminEdit - did not work
+    # Recache Prerender on SAVE of public post
+    url = Meteor.absoluteUrl('blog/', secure: true)
+    #console.log 'thisXXXXXXXXXXXXXXXXXX', this
+    if @mode == 'public'
+      console.log 'update Prerender:', url + @slug
+      Meteor.call 'recachePrerenderUrl', url + @slug
+    # Update blog summary page
+    Meteor.call 'recachePrerenderUrl', url
+    
     save tpl, (id, err) ->
       if err
         return toastr.error err.message

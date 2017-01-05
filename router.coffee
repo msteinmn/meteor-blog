@@ -169,29 +169,34 @@ Meteor.startup ->
   routes.push
     path: basePath or '/' # ...but ensure we don't have a route path of ''
     name: 'blogIndex'
-    fastRender: ->
-      @subscribe 'blog.authors'
-      @subscribe 'blog.posts'
+# fastRender removed because it conflicts with
+# the Prerender.io server creating an exception:
+# TypeError: Cannot read property 'access-control-allow-origin' of null in package
+# meteorhacks_inject-data when using urp param
+# /?_escaped_fragment_=
+#    fastRender: ->
+#      @subscribe 'blog.authors'
+#      @subscribe 'blog.posts'
 
   # BLOG TAG
 
   routes.push
     path: basePath + '/tag/:tag'
     name: 'blogTagged'
-    fastRender: (params) ->
-      @subscribe 'blog.authors'
-      @subscribe 'blog.taggedPosts', params.tag
+#    fastRender: (params) ->
+#      @subscribe 'blog.authors'
+#      @subscribe 'blog.taggedPosts', params.tag
 
   # SHOW BLOG
 
   routes.push
     path: basePath + '/:slug'
     name: 'blogShow'
-    fastRender: (params) ->
-      @subscribe 'blog.authors'
-      @subscribe 'blog.singlePostBySlug', params.slug
-      @subscribe 'blog.commentsBySlug', params.slug
-      @subscribe 'blog.readCountBySlug', params.slug
+#    fastRender: (params) ->
+#      @subscribe 'blog.authors'
+#      @subscribe 'blog.singlePostBySlug', params.slug
+#      @subscribe 'blog.commentsBySlug', params.slug
+#      @subscribe 'blog.readCountBySlug', params.slug
 
   # ----------------------------------------------------------------------------
   # ADMIN ROUTES
