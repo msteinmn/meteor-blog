@@ -1,8 +1,8 @@
 Package.describe({
   summary: "A package that provides a blog at /blog, forked from meteor-blog @0.8.6",
   version: "0.8.7",
-  name: "ryw:blog",
-  git: "https://github.com/meteor-blog/meteor-blog.git"
+  name: "msteinmn:blog",
+  git: "https://github.com/msteinmn/meteor-blog.git"
 });
 
 Package.onUse(function(api) {
