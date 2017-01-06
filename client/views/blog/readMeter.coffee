@@ -14,7 +14,7 @@ Template.readMeter.onRendered ->
   @perc = new ReactiveVar '0'
   self = @
   @autorun ->
-      analytics.page 'blog', { path: window.location.pathname + '#' + self.perc.get() }
+      analytics.page 'blog', { path: window.location.pathname + '/' + self.perc.get() }
       #console.log '------------------ParentData:', window.location.pathname + '#' + self.perc.get()
  
 
@@ -46,40 +46,7 @@ Template.readMeter.onRendered ->
   ).bind(this)
 
   $(window).on 'scroll', @scrollHandler
-         
-        
-        
-        
-        
-        
-    
-#  $(window).scroll (self) ->
-#    if m
-#      #recalculate postHeight as images are not rendered in the beginning
-#      postHeight = $('#read-meter-styles').parent().height() - 250
-#      p.innerHTML = 'A ' + Math.ceil(postHeight / 1000) + ' minute read.'
-#      scroll = $(window).scrollTop()
-#      ratio = scroll / postHeight
-#        
-#      # record scrolling
-#      console.log 'self:', self, @
-#      if ratio > 0.1 and ratio < 0.5
-#            self.perc = '25'
-#            console.log 'XXXXXXXXX 25'
-#      if ratio > 0.5 and ratio < 0.75
-#            self.perc = '50'
-#      if ratio > 0.75
-#            self.perc = '100'
-#            
-#      #console.log 'ratio:', ratio
-#      w.style.width = ratio * postWidth + 'px'
-#      if scroll >= d and ratio <= 1
-#        m.className = 'read-meter-fixed'
-#        f.style.height = '180px'
-#      else
-#        m.className = ''
-#        f.style.height = ''
-#    return
+
 
   $(window).resize ->
     #postWidth = $(window).width() * 0.8;
