@@ -118,7 +118,7 @@ save = (tpl, cb) ->
 
   attrs =
     title: $('[name=title]', $form).val()
-    tags: getBlogTags($('[name=tags]', $form).val().split(','))
+    tags: getBlogTags($('[name=tags]', $form).val().split(',').map(Function.prototype.call, String.prototype.trim) )
     slug: slug
     description: $('[name=description]', $form).val()
     intro: intro
