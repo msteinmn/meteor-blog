@@ -126,18 +126,18 @@ class Blog.Post extends Minimongoid
 
   @random: (slug) ->
     items = Blog.Post._collection.find().count()
-    console.log '# items:', items, 'slug:', slug
+    #console.log '# items:', items, 'slug:', slug
 
     if items <= 3
       latest = Blog.Post.all {limit: 3, sort: updatedAt: -1}
-      console.log 'latest <=3:'
+      #console.log 'latest <=3:'
 
     else        
       skip = Math.round(Math.random()*(items-4))
       #latest = Blog.Post.all {skip: skip, limit: 3, sort: updatedAt: -1}
       latest = Blog.Post.where {slug: $not: slug}, {skip: skip, limit: 3, sort: updatedAt: -1}
         
-      console.log 'skip', skip
+      #console.log 'skip', skip
 
     latest
 
