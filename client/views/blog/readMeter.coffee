@@ -70,6 +70,7 @@ Template.subscribeEmailSmall.events 'submit form#subscribe-form-small': (e, t) -
   if form.valid()
     l.ladda 'start'
     email = form.find('#Email').val()
+    
     # insert email address into CampaignMonitor list
     Meteor.call 'createSend', email, ' ', (err) ->
       l.ladda 'stop'
@@ -80,6 +81,16 @@ Template.subscribeEmailSmall.events 'submit form#subscribe-form-small': (e, t) -
         console.log 'list success'
         toastr.success 'We got you covered!'
       return
+
+    # send an email to self
+    emailText = 'New subscriber ' + email + ' from page ' + @slug
+    Meteor.call 'sendEmail', emailText, null, (err) ->
+      if err
+        console.log 'email send error', err
+      else
+        console.log 'email send success'
+      return
+
     # identify the user / send to segment.io & Mixpanel
     analytics.identify '', {email: email}
   return
